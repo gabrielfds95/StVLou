@@ -628,8 +628,7 @@
     <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 18%; top: 48%; width: 42px; height: 42px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
     <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 82%; top: 72%; width: 50px; height: 50px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
   </div>
-  <audio id="musicAudio" loop><source src="Saint valentin/Lauryn Hill Doo Wop That Thing Official HD Video.mp3" type="audio/mpeg"></audio>
-  <audio id="celebrationAudio"><source src="celebration.mp3" type="audio/mpeg"></audio>
+  <audio id="musicAudio" loop><source src="img/Lauryn Hill Doo Wop That Thing Official HD Video.mp3" type="audio/mpeg"></audio>
 
   <div class="hearts-bg" aria-hidden="true">
     <span class="heart-float">♥</span>
@@ -644,7 +643,7 @@
   <div class="container question-block" id="questionBlock">
     <div class="flowers" aria-hidden="true">🌸 🌷 🌹 🌸 🌷</div>
     <div class="photo-wrap">
-      <img id="photoImg" src="/Saint valentin/hihi.jpg" alt="Nous deux" />
+      <img id="photoImg" src="img/hihi.jpg" alt="Nous deux" />
     </div>
     <div class="title-with-music">
       <h1>Louise, veux-tu être ma Valentine ?</h1>
@@ -663,7 +662,7 @@
 
   <div class="container celebration" id="celebration">
     <div class="photo-fin">
-      <img id="photoImg" src="/Saint valentin/mi.jpg" alt="Nous deux" />
+      <img id="photoImg" src="img/mi.jpg" alt="Nous deux" />
     </div>
     <div class="hearts-row" aria-hidden="true">♥ ♥ ♥ ♥ ♥</div>
     <h2>Je savais que tu dirais oui !</h2>
@@ -675,7 +674,7 @@
     </div>
   </div>
 
-  <audio id="cacaAudio"><source src="/Saint valentin/IMG_8818.mp3" type="audio/mpeg"></audio>
+  <audio id="cacaAudio"><source src="img/IMG_8818.mp3" type="audio/mpeg"></audio>
 
   <div class="rising-hearts" id="risingHearts"></div>
   <div class="confetti-zone" id="confettiZone"></div>
@@ -777,7 +776,7 @@
         btnNon.classList.add('flying');
         arrowToOui.classList.add('show');
         showReplique();
-        photoImg.src = 'gueule.jpg';
+        photoImg.src = 'img/gueule.jpg';
         
         // Première position
         moveNonButtonToPosition();
@@ -861,7 +860,7 @@
       btnOui.addEventListener('click', function () {
         questionBlock.classList.add('hide');
         celebration.classList.add('show');
-        photoImg.src = 'mi.jpg';
+        photoImg.src = 'img/mi.jpg';
         createConfetti();
         createRisingHearts();
         try {
@@ -878,7 +877,7 @@
         btnNon.style.top = '';
         arrowToOui.classList.remove('show');
         repliqueText.textContent = '';
-        photoImg.src = 'hihi.jpg';
+        photoImg.src = 'img/hihi.jpg';
         nonClickCount = 0;
         btnOui.style.transform = 'scale(1)';
         risingHearts.innerHTML = '';
