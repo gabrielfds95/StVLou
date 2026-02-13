@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Louise, sois ma Valentine ♥</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 30%, #ffd6e3 60%, #ffcce0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow-x: hidden;
+    }
+    /* Fond fleurs animées (pétales qui s'ouvrent et se referment) */
+    .flowers-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .flowers-bg .flower-svg {
+      position: absolute;
+      opacity: 0.32;
+    }
+    .flowers-bg .flower-svg .flower-center {
+      fill: #f5e6a3;
+    }
+    .flowers-bg .flower-svg .petal {
+      fill: #ffb7c5;
+      transform-origin: 50% 50%;
+      transform-box: fill-box;
+      animation: petalOpen 5s ease-in-out infinite;
+    }
+    .flowers-bg .flower-svg.flower-5petals .petal { animation-delay: 0s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(2) .petal { animation-delay: 0.5s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(3) .petal { animation-delay: 1s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(4) .petal { animation-delay: 1.5s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(5) .petal { animation-delay: 2s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(6) .petal { animation-delay: 0.3s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(7) .petal { animation-delay: 0.8s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(8) .petal { animation-delay: 1.2s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(9) .petal { animation-delay: 2.2s; }
+    .flowers-bg .flower-svg.flower-5petals:nth-child(10) .petal { animation-delay: 2.7s; }
+    .flowers-bg .flower-svg.flower-6petals .petal { animation-duration: 5.5s; }
+    .flowers-bg .flower-svg.flower-6petals:nth-child(11) .petal { animation-delay: 0.2s; }
+    .flowers-bg .flower-svg.flower-6petals:nth-child(12) .petal { animation-delay: 1s; }
+    .flowers-bg .flower-svg.flower-6petals:nth-child(13) .petal { animation-delay: 1.8s; }
+    .flowers-bg .flower-svg.flower-6petals:nth-child(14) .petal { animation-delay: 0.6s; }
+    .flowers-bg .flower-svg.flower-6petals:nth-child(15) .petal { animation-delay: 2.4s; }
+    @keyframes petalOpen {
+      0%, 100% { transform: scale(0.78); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    /* Cœurs en arrière-plan */
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .heart-float {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.25;
+      color: #c41e5a;
+      animation: float 6s ease-in-out infinite;
+    }
+    .heart-float:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .heart-float:nth-child(2) { left: 85%; top: 15%; animation-delay: 1s; }
+    .heart-float:nth-child(3) { left: 25%; top: 70%; animation-delay: 2s; }
+    .heart-float:nth-child(4) { left: 75%; top: 65%; animation-delay: 0.5s; }
+    .heart-float:nth-child(5) { left: 50%; top: 10%; animation-delay: 3s; }
+    .heart-float:nth-child(6) { left: 15%; top: 50%; animation-delay: 1.5s; }
+    .heart-float:nth-child(7) { left: 90%; top: 45%; animation-delay: 2.5s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-15px) scale(1.05); }
+    }
+    /* Contenu principal */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 420px;
+    }
+    /* Entrée en scène */
+    .question-block .flowers,
+    .question-block .photo-wrap,
+    .question-block h1,
+    .question-block .subtitle,
+    .question-block .teddy,
+    .question-block .buttons-wrap {
+      opacity: 0;
+      animation: reveal 0.6s ease forwards;
+    }
+    .question-block .flowers { animation-delay: 0.1s; }
+    .question-block .photo-wrap { animation-delay: 0.2s; }
+    .question-block h1 { animation-delay: 0.4s; }
+    .question-block .subtitle { animation-delay: 0.6s; }
+    .question-block .teddy { animation-delay: 0.7s; }
+    .question-block .buttons-wrap { animation-delay: 0.9s; }
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .flowers {
+      font-size: 2rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .photo-wrap {
+      margin: 0 auto 1.25rem;
+      width: 100%;
+      max-width: 280px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(196, 30, 90, 0.25);
+      border: 3px solid rgba(196, 30, 90, 0.4);
+    }
+    .photo-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+    .photo-fin {
+      margin: 0 auto 1.25rem;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(196, 30, 90, 0.25);
+      border: 3px solid rgba(196, 30, 90, 0.4);
+    }
+    .photo-fin img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+    h1 {
+      color: #c41e5a;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      line-height: 1.3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    .subtitle {
+      color: #a01545;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      opacity: 0.95;
+    }
+    .teddy {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    /* Zone des boutons : Oui à gauche, Non à droite (Non bouge au survol) */
+    .buttons-wrap {
+      position: relative;
+      min-height: 200px;
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1rem;
+      margin: 0 auto;
+    }
+    .btn {
+      padding: 1.1rem 1.8rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-oui {
+      background: linear-gradient(145deg, #e91e63, #c2185b);
+      color: white;
+      box-shadow: 0 4px 14px rgba(233, 30, 99, 0.4);
+    }
+    .btn-oui:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(233, 30, 99, 0.5);
+    }
+    .btn-oui:active {
+      transform: scale(0.98);
+    }
+    .btn-non {
+      background: linear-gradient(145deg, #9e9e9e, #757575);
+      color: white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+    .btn-non.flying {
+      position: absolute;
+    }
+    .btn-non:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .arrow-to-oui {
+      position: absolute;
+      left: 18%;
+      bottom: 100%;
+      margin-bottom: 10px;
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 22px solid #c41e5a;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .arrow-to-oui.show {
+      opacity: 1;
+      animation: arrowPoint 0.7s ease-in-out infinite;
+    }
+    @keyframes arrowPoint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    .replique-zone {
+      min-height: 2rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      color: #a01545;
+      opacity: 0.9;
+      transition: opacity 0.25s ease;
+    }
+    .replique-zone span {
+      display: inline-block;
+      animation: repliqueIn 0.3s ease;
+    }
+    @keyframes repliqueIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .music-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(196, 30, 90, 0.5);
+      background: rgba(255, 255, 255, 0.95);
+      color: #c41e5a;
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .title-with-music {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0;
+    }
+    .music-btn:hover {
+      background: #ffe4ec;
+      transform: scale(1.05);
+    }
+    .music-btn.playing {
+      background: #ffcce0;
+    }
+    /* Écran de célébration (caché par défaut) */
+    .celebration {
+      display: none;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+    .celebration.show {
+      display: block;
+    }
+    .question-block.hide {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .celebration h2 {
+      color: #c41e5a;
+      font-size: 1.6rem;
+      margin: 0 0 0.5rem;
+    }
+    .celebration .message {
+      color: #a01545;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .celebration .hearts-row {
+      font-size: 2rem;
+      letter-spacing: 0.3rem;
+      margin: 1rem 0;
+      color: #c41e5a;
+    }
+    .rising-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .rising-hearts .heart {
+      position: absolute;
+      font-size: 1.5rem;
+      bottom: -2rem;
+      color: #c41e5a;
+      animation: rise 4s ease-in forwards;
+    }
+    @keyframes rise {
+      to {
+        bottom: 100%;
+        transform: translateX(0) rotate(0deg);
+        opacity: 0.6;
+      }
+    }
+    .confetti-zone {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: confettiFall 3s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    .btn-replay {
+      margin-top: 1rem;
+      background: linear-gradient(145deg, #e91e63, #c2185b);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-replay:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    .sound-btn {
+      margin-left: 0.5rem;
+      background: linear-gradient(145deg, #e91e63, #c2185b);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+    }
+    .sound-btn:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    /* Intro 3D : plusieurs cœurs qui se rapprochent pour former un gros cœur */
+    .intro-flythrough {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 40%, #ffd6e3 100%);
+      perspective: 1400px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective-origin: 50% 50%;
+    }
+    .intro-scene {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-style: preserve-3d;
+    }
+    .intro-flythrough.done {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+    }
+    .intro-heart {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      left: 50%;
+      top: 50%;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      animation: heartConverge 2.5s ease-in-out forwards;
+    }
+    .intro-heart svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .intro-heart path { fill: #c41e5a; }
+    @keyframes heartConverge {
+      0% {
+        transform: translate(-50%, -50%) translate3d(var(--x), var(--y), var(--z)) rotateY(var(--ry)) rotateX(var(--rx)) scale(0.2);
+        opacity: 0.85;
+      }
+      100% {
+        transform: translate(-50%, -50%) translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg) scale(1.4);
+        opacity: 1;
+      }
+    }
+    /* Media queries pour responsive design */
+    @media (max-width: 640px) {
+      body {
+        padding: 0.5rem;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0 0.5rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .subtitle {
+        font-size: 1rem;
+      }
+      .flowers {
+        font-size: 1.5rem;
+        letter-spacing: 0.3rem;
+      }
+      .photo-wrap {
+        max-width: 100%;
+        margin-bottom: 1rem;
+      }
+      .photo-fin {
+        max-width: 100%;
+        margin-bottom: 1rem;
+      }
+      .buttons-wrap {
+        min-height: 150px;
+        gap: 1rem;
+      }
+      .btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+      }
+      .title-with-music {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .music-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+      .button-group {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .btn-replay,
+      .sound-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+      .replique-zone {
+        font-size: 0.85rem;
+      }
+      .teddy {
+        font-size: 2rem;
+      }
+      .celebration h2 {
+        font-size: 1.4rem;
+      }
+      .celebration .message {
+        font-size: 1rem;
+      }
+      .hearts-row {
+        font-size: 1.5rem;
+        letter-spacing: 0.2rem;
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 0.3rem;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0 0.3rem;
+      }
+      h1 {
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+      .subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+      .flowers {
+        font-size: 1.2rem;
+        letter-spacing: 0.2rem;
+        margin-bottom: 0.3rem;
+      }
+      .photo-wrap,
+      .photo-fin {
+        max-width: 100%;
+        margin-bottom: 0.8rem;
+      }
+      .buttons-wrap {
+        min-height: 120px;
+        gap: 0.8rem;
+        max-width: 100%;
+      }
+      .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+      }
+      .title-with-music {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .music-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+      .button-group {
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+      .btn-replay,
+      .sound-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        width: 100%;
+      }
+      .replique-zone {
+        font-size: 0.8rem;
+        min-height: 1.5rem;
+      }
+      .teddy {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      .celebration h2 {
+        font-size: 1.2rem;
+      }
+      .celebration .message {
+        font-size: 0.95rem;
+      }
+      .hearts-row {
+        font-size: 1.2rem;
+        letter-spacing: 0.1rem;
+        margin: 0.5rem 0;
+      }
+      .arrow-to-oui {
+        left: 15%;
+      }
+    }
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 500px;
+      }
+      .buttons-wrap {
+        min-height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro-flythrough" id="introFlythrough" aria-hidden="true">
+    <div class="intro-scene" id="introScene"></div>
+  </div>
+  <div class="flowers-bg" aria-hidden="true">
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 8%; top: 12%; width: 50px; height: 50px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 28%; top: 8%; width: 65px; height: 65px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 52%; top: 15%; width: 45px; height: 45px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 78%; top: 22%; width: 55px; height: 55px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 12%; top: 35%; width: 70px; height: 70px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 88%; top: 38%; width: 48px; height: 48px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 5%; top: 58%; width: 58px; height: 58px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 42%; top: 55%; width: 52px; height: 52px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 72%; top: 62%; width: 62px; height: 62px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-5petals" viewBox="-15 -15 30 30" style="left: 22%; top: 78%; width: 45px; height: 45px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(72 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(144 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(216 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="12" transform="rotate(288 0 0)"/></svg>
+    <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 58%; top: 82%; width: 55px; height: 55px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
+    <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 35%; top: 25%; width: 48px; height: 48px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
+    <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 65%; top: 45%; width: 60px; height: 60px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
+    <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 18%; top: 48%; width: 42px; height: 42px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
+    <svg class="flower-svg flower-6petals" viewBox="-15 -15 30 30" style="left: 82%; top: 72%; width: 50px; height: 50px;"><circle class="flower-center" cx="0" cy="0" r="4"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(0 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(60 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(120 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(180 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(240 0 0)"/><ellipse class="petal" cx="0" cy="0" rx="7" ry="11" transform="rotate(300 0 0)"/></svg>
+  </div>
+  <audio id="musicAudio" loop><source src="Saint valentin/Lauryn Hill Doo Wop That Thing Official HD Video.mp3" type="audio/mpeg"></audio>
+  <audio id="celebrationAudio"><source src="celebration.mp3" type="audio/mpeg"></audio>
+
+  <div class="hearts-bg" aria-hidden="true">
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+    <span class="heart-float">♥</span>
+  </div>
+
+  <div class="container question-block" id="questionBlock">
+    <div class="flowers" aria-hidden="true">🌸 🌷 🌹 🌸 🌷</div>
+    <div class="photo-wrap">
+      <img id="photoImg" src="/Saint valentin/hihi.jpg" alt="Nous deux" />
+    </div>
+    <div class="title-with-music">
+      <h1>Louise, veux-tu être ma Valentine ?</h1>
+      <button type="button" class="music-btn" id="musicBtn" title="Lancer la musique" aria-label="Lancer la musique">♫</button>
+    </div>
+    <p class="subtitle">Pour toi, avec tout mon amour</p>
+    <span class="teddy" aria-hidden="true">🦣</span>
+    <p class="replique-zone" id="repliqueZone"><span id="repliqueText"></span></p>
+
+    <div class="buttons-wrap" id="buttonsWrap">
+      <button type="button" class="btn btn-oui" id="btnOui">Oui</button>
+      <div class="arrow-to-oui" id="arrowToOui" aria-hidden="true"></div>
+      <button type="button" class="btn btn-non" id="btnNon">Non</button>
+    </div>
+  </div>
+
+  <div class="container celebration" id="celebration">
+    <div class="photo-fin">
+      <img id="photoImg" src="/Saint valentin/mi.jpg" alt="Nous deux" />
+    </div>
+    <div class="hearts-row" aria-hidden="true">♥ ♥ ♥ ♥ ♥</div>
+    <h2>Je savais que tu dirais oui !</h2>
+    <p class="message">Louise, tu rends tous mes weekend vraiment spéciaux depuis un mois, j'aime beaucoup ce qu'on vit ensemble. Merci ❤️  À demain amour.</p>
+    <div class="hearts-row" aria-hidden="true">♥ ♥ ♥ ♥ ♥</div>
+    <div class="button-group">
+      <button type="button" class="btn-replay" id="btnReplay">Revoir la question</button>
+      <button type="button" class="sound-btn" id="btnCaca" title="Son spécial">♫tchao</button>
+    </div>
+  </div>
+
+  <audio id="cacaAudio"><source src="/Saint valentin/IMG_8818.mp3" type="audio/mpeg"></audio>
+
+  <div class="rising-hearts" id="risingHearts"></div>
+  <div class="confetti-zone" id="confettiZone"></div>
+
+  <script>
+    (function () {
+      var introEl = document.getElementById('introFlythrough');
+      var introScene = document.getElementById('introScene');
+      var heartSvg = '<svg viewBox="-10 -10 20 20"><path d="M0 -4 C -3 -7 -8 -6 -8 -2 C -8 1 -4 4 0 7 C 4 4 8 1 8 -2 C 8 -6 3 -7 0 -4 Z"/></svg>';
+      var nHearts = 45;
+      var radius = 320;
+      for (var i = 0; i < nHearts; i++) {
+        var phi = Math.acos(2 * Math.random() - 1);
+        var theta = Math.random() * 2 * Math.PI;
+        var r = 0.3 * radius + Math.random() * 0.7 * radius;
+        var x = r * Math.sin(phi) * Math.cos(theta);
+        var y = r * Math.sin(phi) * Math.sin(theta);
+        var z = r * Math.cos(phi);
+        var rotateY = Math.random() * 360;
+        var rotateX = (Math.random() * 60) - 30;
+        var el = document.createElement('div');
+        el.className = 'intro-heart';
+        el.style.setProperty('--x', Math.round(x) + 'px');
+        el.style.setProperty('--y', Math.round(y) + 'px');
+        el.style.setProperty('--z', Math.round(z) + 'px');
+        el.style.setProperty('--ry', Math.round(rotateY) + 'deg');
+        el.style.setProperty('--rx', Math.round(rotateX) + 'deg');
+        el.style.animationDelay = (Math.random() * 0.2) + 's';
+        el.innerHTML = heartSvg;
+        introScene.appendChild(el);
+      }
+      setTimeout(function () {
+        introEl.classList.add('done');
+        setTimeout(function () {
+          introEl.style.display = 'none';
+        }, 650);
+      }, 2800);
+
+      var btnOui = document.getElementById('btnOui');
+      var btnNon = document.getElementById('btnNon');
+      var buttonsWrap = document.getElementById('buttonsWrap');
+      var questionBlock = document.getElementById('questionBlock');
+      var celebration = document.getElementById('celebration');
+      var btnReplay = document.getElementById('btnReplay');
+      var btnCaca = document.getElementById('btnCaca');
+      var confettiZone = document.getElementById('confettiZone');
+      var repliqueText = document.getElementById('repliqueText');
+      var musicBtn = document.getElementById('musicBtn');
+      var musicAudio = document.getElementById('musicAudio');
+      var celebrationAudio = document.getElementById('celebrationAudio');
+      var cacaAudio = document.getElementById('cacaAudio');
+      var risingHearts = document.getElementById('risingHearts');
+      var photoImg = document.getElementById('photoImg');
+
+      var repliques = [
+        'ehehe nan ?',
+        'Serieuse !',
+        'Bolosse clique oui...',
+        'Le Oui est a gauche',
+        'Zbi',
+        'Wala clique oui',
+        'Michto ',
+        'Stp :( ',
+        'Promis on mangera des sushis après',
+        'ou une glace ?',
+      ];
+      var repliqueIndex = 0;
+      var nonClickCount = 0;
+
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function showReplique() {
+        var msg = repliques[repliqueIndex % repliques.length];
+        repliqueIndex++;
+        repliqueText.textContent = msg;
+      }
+
+      var arrowToOui = document.getElementById('arrowToOui');
+      var nonButtonMoving = false;
+      function moveNonButtonToPosition() {
+        var wrap = buttonsWrap.getBoundingClientRect();
+        var btnRect = btnNon.getBoundingClientRect();
+        var padding = 20;
+        var maxX = wrap.width - btnRect.width - padding;
+        var maxY = wrap.height - btnRect.height - padding;
+        if (maxX < 0) maxX = wrap.width * 0.5;
+        if (maxY < 0) maxY = wrap.height * 0.5;
+        var newX = randomBetween(padding, Math.max(padding + 50, maxX));
+        var newY = randomBetween(padding, Math.max(padding + 50, maxY));
+        btnNon.style.left = newX + 'px';
+        btnNon.style.top = newY + 'px';
+      }
+
+      function moveNonButton() {
+        if (nonButtonMoving) return;
+        nonButtonMoving = true;
+        btnNon.classList.add('flying');
+        arrowToOui.classList.add('show');
+        showReplique();
+        photoImg.src = 'gueule.jpg';
+        
+        // Première position
+        moveNonButtonToPosition();
+        
+        // Deuxième position après 150ms
+        setTimeout(function() {
+          moveNonButtonToPosition();
+        }, 150);
+        
+        // Troisième position après 300ms
+        setTimeout(function() {
+          moveNonButtonToPosition();
+        }, 300);
+        
+        // Réinitialiser le flag après les mouvements
+        setTimeout(function() {
+          nonButtonMoving = false;
+        }, 350);
+      }
+
+      btnNon.addEventListener('mouseenter', moveNonButton);
+      btnNon.addEventListener('click', function (e) {
+        nonClickCount++;
+        var scale = 1 + (nonClickCount * 0.15);
+        btnOui.style.transform = 'scale(' + scale + ')';
+        moveNonButton();
+      });
+
+      musicBtn.addEventListener('click', function () {
+        if (musicAudio.paused) {
+          musicAudio.play().then(function () {
+            musicBtn.classList.add('playing');
+            musicBtn.title = 'Couper la musique';
+          }).catch(function () {
+            musicBtn.style.display = 'none';
+          });
+        } else {
+          musicAudio.pause();
+          musicBtn.classList.remove('playing');
+          musicBtn.title = 'Lancer la musique';
+        }
+      });
+      musicAudio.addEventListener('error', function () {
+        musicBtn.style.display = 'none';
+      });
+
+      function createRisingHearts() {
+        var symbols = ['♥', '❤', '💕'];
+        for (var i = 0; i < 15; i++) {
+          (function (j) {
+            setTimeout(function () {
+              var h = document.createElement('span');
+              h.className = 'heart';
+              h.textContent = symbols[j % 3];
+              h.style.left = randomBetween(5, 95) + '%';
+              h.style.animationDelay = (j * 0.15) + 's';
+              risingHearts.appendChild(h);
+              setTimeout(function () { h.remove(); }, 4500);
+            }, j * 200);
+          })(i);
+        }
+      }
+
+      var colors = ['#e91e63', '#c2185b', '#f8bbd0', '#f48fb1', '#ffcdd2'];
+      function createConfetti() {
+        confettiZone.innerHTML = '';
+        for (var i = 0; i < 70; i++) {
+          var c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = randomBetween(0, 100) + '%';
+          c.style.background = colors[Math.floor(randomBetween(0, colors.length))];
+          c.style.animationDelay = randomBetween(0, 0.5) + 's';
+          c.style.animationDuration = (2 + randomBetween(0, 1.5)) + 's';
+          confettiZone.appendChild(c);
+        }
+        setTimeout(function () {
+          confettiZone.innerHTML = '';
+        }, 4500);
+      }
+
+      btnOui.addEventListener('click', function () {
+        questionBlock.classList.add('hide');
+        celebration.classList.add('show');
+        photoImg.src = 'mi.jpg';
+        createConfetti();
+        createRisingHearts();
+        try {
+          celebrationAudio.currentTime = 0;
+          celebrationAudio.play().catch(function () {});
+        } catch (e) {}
+      });
+
+      btnReplay.addEventListener('click', function () {
+        celebration.classList.remove('show');
+        questionBlock.classList.remove('hide');
+        btnNon.classList.remove('flying');
+        btnNon.style.left = '';
+        btnNon.style.top = '';
+        arrowToOui.classList.remove('show');
+        repliqueText.textContent = '';
+        photoImg.src = 'hihi.jpg';
+        nonClickCount = 0;
+        btnOui.style.transform = 'scale(1)';
+        risingHearts.innerHTML = '';
+      });
+
+      btnCaca.addEventListener('click', function () {
+        try {
+          cacaAudio.currentTime = 0;
+          cacaAudio.play().catch(function () {});
+        } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+</html>
